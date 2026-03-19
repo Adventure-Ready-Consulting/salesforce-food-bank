@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Visit_Month__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(MONTH(DATEVALUE( Visit_Date__c )) = 1, &quot;January&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 2, &quot;February&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 3, &quot;March&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 4, &quot;April&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 5, &quot;May&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 6, &quot;June&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 7, &quot;July&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 8, &quot;August&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 9, &quot;September&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 10, &quot;October&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 11, &quot;November&quot;,
+IF(MONTH(DATEVALUE( Visit_Date__c )) = 12, &quot;December&quot;,
+NULL))))))))))))</formula>
+    <label>Visit Month</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

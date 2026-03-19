@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Age_Entry_Date__c</fullName>
+    <description>Store this date so you can increment ages automatically even when you have no actual birthdate.</description>
+    <externalId>false</externalId>
+    <label>Age Entry Date</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

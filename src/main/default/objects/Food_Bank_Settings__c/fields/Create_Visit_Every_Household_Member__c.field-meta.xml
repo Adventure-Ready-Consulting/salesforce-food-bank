@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Create_Visit_Every_Household_Member__c</fullName>
+    <defaultValue>false</defaultValue>
+    <externalId>false</externalId>
+    <inlineHelpText>Check this box to create a visit for every household member.  Set to True if you want to track individuals served.</inlineHelpText>
+    <label>Create Visit Every Household Member</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

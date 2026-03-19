@@ -44,8 +44,21 @@
     
     <div ng-show="settings.general.checkInRequired" class="panel panel-default">
         <div class="panel-heading">
-            <div class="pull-right">
-                <a class="btn btn-default" ng-click="refresh()"><i ng-class="{'fa': true, 'fa-refresh': true, 'fa-spin': callingOut}"></i></a>
+            <div class="pull-right btn-group">
+                <a class="btn btn-checkout-all"
+                   ng-click="checkOutAll()"
+                   ng-disabled="!checkedInClients || !checkedInClients.length"
+                   title="Check Out All">
+                  <i class="fa fa-sign-out"></i>
+                  <span class="btn-text">Check Out All</span>
+                </a>
+              
+                <a class="btn btn-default"
+                   ng-click="refresh()"
+                   title="Refresh">
+                  <i ng-class="{'fa': true, 'fa-refresh': true, 'fa-spin': callingOut}"></i>
+                  <span class="btn-text">Refresh</span>
+                </a>
             </div>
             <h4>Current Visitors</h4>
         </div>
@@ -83,6 +96,6 @@
         </div>
     </div>
 </div>
-<div class="col-md-5">
+<div ng-show="settings.general.showStatistics" class="col-md-5">
     <div ng-include="basePath + '/app/home/stats.html'"></div>
 </div>

@@ -27,6 +27,10 @@ angular.module('homeController')
       }
     };
 
+    $scope.checkOutAll = function () {
+      $location.url('/log_visit_all');
+    };    
+
     $scope.refresh = function() {
       $scope.callingOut = true;
 

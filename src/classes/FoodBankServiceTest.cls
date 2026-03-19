@@ -20,12 +20,12 @@ public with sharing class FoodBankServiceTest {
         commU.put('Bread', 1);
 
         // Test CheckIn & CheckOut
-        FoodBankService.checkIn(cHh.Id, cContact.Id, commU, 'Notes');
+        FoodBankService.checkIn(cHh.Id, cContact.Id, commU, 'Notes', 'Food Bank', '01/01/2019', 'Unknown Household Composition');
         System.assert(Food_Bank_Checkin__c.getInstance(cHh.Id) != null);
 
         // Attempt to CheckIn again should throw error
         try {
-            FoodBankService.checkIn(cHh.Id, cContact.Id, commU, 'Notes');
+            FoodBankService.checkIn(cHh.Id, cContact.Id, commU, 'Notes', 'Food Bank', '01/01/2019', 'Unknown Household Composition');
             System.assert(false, 'Error should have occured');
         } catch (Exception ex) {
             // Nothing to see here
@@ -84,17 +84,19 @@ public with sharing class FoodBankServiceTest {
 	@isTest
 	private static void testCheckInsVisits() {
 		Account household1 = new Account(
-            Name = 'Test Account',
+            Name = 'Test Account1',
 			Inactive__c = false
 		);
 		
-		// insert a contact
-        Contact contact = new Contact(
-			Lastname = 'Test Lastname'
-			);
-        
 		// Check insert of Household
 		household1 = FoodBankService.saveHousehold(household1);
+
+		// insert a contact
+        Contact contact = new Contact(
+			Lastname = 'Test Lastname',
+            AccountId = household1.Id
+		);
+        insert contact;
 
 		Food_Bank_Checkin__c checkin1 = new Food_Bank_Checkin__c(
 			Name = household1.Id,
@@ -103,20 +105,26 @@ public with sharing class FoodBankServiceTest {
             Box_Size__c = 'small',
             Check_In_Time__c = Datetime.now()
         );
-
 		insert checkin1;
 
 		Account household2 = new Account(
-            Name = 'Test Account',
+            Name = 'Test Account2',
 			Inactive__c = false
 		);
+
+		// insert a contact
+        Contact contact2 = new Contact(
+			Lastname = 'Test Lastname2',
+            AccountId = household2.Id
+		);
+        insert contact2;
 		
 		// Check insert of Household
 		household2 = FoodBankService.saveHousehold(household2);
 
 		Food_Bank_Checkin__c checkin2 = new Food_Bank_Checkin__c(
 			Name = household2.Id,
-			Visitor__c = contact.Id,
+			Visitor__c = contact2.Id,
             Points_Remaining__c = 15,
             Box_Size__c = 'small',
             Check_In_Time__c = Datetime.now()

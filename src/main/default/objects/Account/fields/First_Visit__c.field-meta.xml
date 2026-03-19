@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>First_Visit__c</fullName>
+    <externalId>false</externalId>
+    <label>First Visit</label>
+    <summarizedField>Food_Bank_Visit__c.Visit_Date__c</summarizedField>
+    <summaryForeignKey>Food_Bank_Visit__c.Household__c</summaryForeignKey>
+    <summaryOperation>min</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

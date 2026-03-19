@@ -99,3 +99,32 @@ table, th, td {
 .bootstrap .dropdown-multiselect ul li {
   margin-left: 2px;
 }
+.bootstrap .btn-group .btn {
+  height: 38px;              /* fixed equal height */
+  line-height: 24px;         /* centers text vertically */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bootstrap .btn-group .btn i {
+  margin-right: 6px;
+}
+.bootstrap .btn.btn-checkout-all {
+  background-color: #fdecea !important;   /* light red default */
+  border-color: #f5c2c7 !important;
+  color: #842029 !important;
+  font-size: 14px;
+}
+
+.bootstrap .btn.btn-checkout-all:hover,
+.bootstrap .btn.btn-checkout-all:focus {
+  background-color: #f8d7da !important;   /* darker on hover */
+  border-color: #f1b0b7 !important;
+  color: #6f1d1b !important;
+}
+
+.bootstrap .btn.btn-checkout-all:active {
+  background-color: #f1bfc5 !important;
+  border-color: #e6a8af !important;
+  color: #5a1c1f !important;
+}

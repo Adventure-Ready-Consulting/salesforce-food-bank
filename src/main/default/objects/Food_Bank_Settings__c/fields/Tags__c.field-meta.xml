@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tags__c</fullName>
+    <description>Semi-colon delimited list of tags for client households.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Semi-colon delimited list of tags for client households. Example:  Special Diet; Spanish Speaker</inlineHelpText>
+    <label>Tags</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

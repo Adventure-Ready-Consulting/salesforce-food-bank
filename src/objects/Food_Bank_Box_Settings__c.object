@@ -3,17 +3,6 @@
     <customSettingsType>List</customSettingsType>
     <description>List of family-size thresholds for different food bank bag or box types. Names should match drop-down list in Visit object.</description>
     <enableFeeds>false</enableFeeds>
-    <fields>
-        <fullName>Minimum_Family_Size__c</fullName>
-        <externalId>false</externalId>
-        <label>Minimum Family Size</label>
-        <precision>2</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
     <label>Food Bank Bag/Box Settings</label>
     <visibility>Protected</visibility>
 </CustomObject>

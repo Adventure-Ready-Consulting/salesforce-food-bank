@@ -3,37 +3,6 @@
     <customSettingsType>List</customSettingsType>
     <description>List of items for which the food bank tracks monthly limits and usage - for example, you get up to 3 boxes of eggs per month.</description>
     <enableFeeds>false</enableFeeds>
-    <fields>
-        <fullName>Allow_Overage__c</fullName>
-        <defaultValue>false</defaultValue>
-        <externalId>false</externalId>
-        <inlineHelpText>If checked, staff will be alerted when clients use more than the limit, but can choose to overlook the warning.</inlineHelpText>
-        <label>Allow Overage</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>Monthly_Limit__c</fullName>
-        <externalId>false</externalId>
-        <label>Monthly Limit</label>
-        <precision>2</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
-        <fullName>Sort_Order__c</fullName>
-        <externalId>false</externalId>
-        <label>Sort Order</label>
-        <precision>18</precision>
-        <required>false</required>
-        <scale>0</scale>
-        <trackTrending>false</trackTrending>
-        <type>Number</type>
-        <unique>false</unique>
-    </fields>
     <label>Food Bank Commodity</label>
     <visibility>Protected</visibility>
 </CustomObject>

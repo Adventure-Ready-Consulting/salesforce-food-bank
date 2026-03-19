@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_HUD_Category__c</fullName>
+    <externalId>false</externalId>
+    <label>Survey HUD Category</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Category A</fullName>
+                <default>false</default>
+                <label>30% HUD</label>
+            </value>
+            <value>
+                <fullName>Category B</fullName>
+                <default>false</default>
+                <label>50% HUD</label>
+            </value>
+            <value>
+                <fullName>Category C</fullName>
+                <default>false</default>
+                <label>80% HUD</label>
+            </value>
+            <value>
+                <fullName>Category D</fullName>
+                <default>false</default>
+                <label>Above 80% HUD</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

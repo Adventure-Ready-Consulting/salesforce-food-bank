@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Source__c</fullName>
+    <externalId>false</externalId>
+    <label>Source</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Source</fullName>
+                <default>false</default>
+                <label>Source</label>
+            </value>
+            <value>
+                <fullName>Referred by agency (identify in Notes)</fullName>
+                <default>false</default>
+                <label>Referred by agency (identify in Notes)</label>
+            </value>
+            <value>
+                <fullName>Referred by individual</fullName>
+                <default>false</default>
+                <label>Referred by individual</label>
+            </value>
+            <value>
+                <fullName>Newspaper, radio, TV, internet</fullName>
+                <default>false</default>
+                <label>Newspaper, radio, TV, internet</label>
+            </value>
+            <value>
+                <fullName>Poster</fullName>
+                <default>false</default>
+                <label>Poster</label>
+            </value>
+            <value>
+                <fullName>Doesn&apos;t know or won&apos;t say</fullName>
+                <default>false</default>
+                <label>Doesn&apos;t know or won&apos;t say</label>
+            </value>
+            <value>
+                <fullName>Phone book</fullName>
+                <default>false</default>
+                <label>Phone book</label>
+            </value>
+            <value>
+                <fullName>Walk-in</fullName>
+                <default>false</default>
+                <label>Walk-in</label>
+            </value>
+            <value>
+                <fullName>Other (Identify in Notes)</fullName>
+                <default>false</default>
+                <label>Other (Identify in Notes)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

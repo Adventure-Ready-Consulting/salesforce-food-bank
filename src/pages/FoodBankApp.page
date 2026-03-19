@@ -47,6 +47,7 @@
             <script src="{!URLFOR($Resource.Angular, 'app/client/client.js')}"></script>
             <script src="{!URLFOR($Resource.Angular, 'app/client_edit/client_edit.js')}"></script>
             <script src="{!URLFOR($Resource.Angular, 'app/log_visit/log_visit.js')}"></script>
+            <script src="{!URLFOR($Resource.Angular, 'app/log_visit_all/log_visit_all.js')}"></script>
 
             <!-- store the resource path and all Visualforce remoting actions for use by Angular -->
             <script>

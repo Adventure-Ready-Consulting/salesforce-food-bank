@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Visit_Frequency_Limit__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Restrictions on the number of visits over a ceratain time period. Accepted values for this setting are Weekly, Biweekly, Monthly, Twice Monthly, Every XX Days (where XX is a minimum number of days allwoed between visits)</inlineHelpText>
+    <label>Visit Frequency Limit</label>
+    <length>80</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

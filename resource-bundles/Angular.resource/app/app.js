@@ -16,7 +16,8 @@ angular.module('foodBankApp', [
   'homeController',
   'clientController',
   'clientEditController',
-  'logVisitController'
+  'logVisitController',
+  'logVisitAllController'
 ])
   .config(['$alertProvider', function($alertProvider) {
     _.extend($alertProvider.defaults, {
@@ -72,6 +73,15 @@ angular.module('foodBankApp', [
           }
         }
       })
+      .when('/log_visit_all', {
+        templateUrl: basePath + '/app/log_visit_all/log_visit_all.html',
+        controller: 'logVisitAllController',
+        resolve: {
+          foundSettings: function (fbSettings) {
+            return fbSettings.get();
+          }
+        }
+      })      
       .when('/log_visit/:clientId/:clientContactId', {
         templateUrl: basePath + '/app/log_visit/log_visit.html',
         controller: 'logVisitController',

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Monthly_Base_Points__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Number of monthly points for a one-person household.  Leave blank if you do not limit points.</inlineHelpText>
+    <label>Monthly Base Points</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

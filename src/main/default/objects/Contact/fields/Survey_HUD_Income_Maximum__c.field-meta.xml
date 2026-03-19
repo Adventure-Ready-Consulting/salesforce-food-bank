@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_HUD_Income_Maximum__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;1&quot;, 20200
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;2&quot;, 23050
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;3&quot;, 25950
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;4&quot;, 28800
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;5&quot;, 31150
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;6&quot;, 33450
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;7&quot;, 37140
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category A&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;8&quot;, 41320
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;1&quot;, 33600
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;2&quot;, 38400
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;3&quot;, 43200
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;4&quot;, 48000
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;5&quot;, 51850
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;6&quot;, 55700
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;7&quot;, 59550
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category B&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;8&quot;, 63400
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;1&quot;, 50400
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;2&quot;, 57600
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;3&quot;, 64800
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;4&quot;, 72000
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;5&quot;, 77800
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;6&quot;, 83550
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;7&quot;, 89300
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category C&quot; &amp;&amp; TEXT(Survey_HUD_Household_Persons__c) = &quot;8&quot;, 95050
+,IF(TEXT(Survey_HUD_Category__c) = &quot;Category D&quot;, 99999
+,0.0)))))))))))))))))))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Survey HUD Income Maximum</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Commodity_Usage_JSON__c</fullName>
+    <description>JSON List showing amount of each commodity item used this visit.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>JSON List showing amount of each commodity item used this visit.</inlineHelpText>
+    <label>Commodity Usage JSON</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

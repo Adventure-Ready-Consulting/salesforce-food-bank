@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Id_Type__c</fullName>
+    <externalId>false</externalId>
+    <label>ID Type</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Not Verified</fullName>
+                <default>false</default>
+                <label>Not Verified</label>
+            </value>
+            <value>
+                <fullName>Drivers License</fullName>
+                <default>false</default>
+                <label>Drivers License</label>
+            </value>
+            <value>
+                <fullName>WA ID</fullName>
+                <default>false</default>
+                <label>WA ID</label>
+            </value>
+            <value>
+                <fullName>DSHS Card</fullName>
+                <default>false</default>
+                <label>DSHS Card</label>
+            </value>
+            <value>
+                <fullName>Utility Bill</fullName>
+                <default>false</default>
+                <label>Utility Bill</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Passport</fullName>
+                <default>false</default>
+                <label>Passport</label>
+            </value>
+            <value>
+                <fullName>Voters Registration</fullName>
+                <default>false</default>
+                <label>Voters Registration</label>
+            </value>
+            <value>
+                <fullName>Medical Coupon</fullName>
+                <default>false</default>
+                <label>Medical Coupon</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

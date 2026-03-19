@@ -188,7 +188,6 @@
         <name>ListView</name>
     </types>
     <types>
-        <members>Admin</members>
         <members>Food Bank Admin</members>
         <members>Food Bank Standard User</members>
         <name>Profile</name>

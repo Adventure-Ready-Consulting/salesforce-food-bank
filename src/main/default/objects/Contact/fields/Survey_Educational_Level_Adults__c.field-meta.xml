@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_Educational_Level_Adults__c</fullName>
+    <externalId>false</externalId>
+    <label>Survey Educational Level Adults</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Less than High School graduate</fullName>
+                <default>false</default>
+                <label>Less than High School graduate</label>
+            </value>
+            <value>
+                <fullName>High School diploma or GED</fullName>
+                <default>false</default>
+                <label>High School diploma or GED</label>
+            </value>
+            <value>
+                <fullName>Some college - no degree or certificate</fullName>
+                <default>false</default>
+                <label>Some college - no degree or certificate</label>
+            </value>
+            <value>
+                <fullName>Certificate from business school or other professional program</fullName>
+                <default>false</default>
+                <label>Certificate from business school or other professional program</label>
+            </value>
+            <value>
+                <fullName>Associated Degree</fullName>
+                <default>false</default>
+                <label>Associated Degree</label>
+            </value>
+            <value>
+                <fullName>Bachelor&apos;s Degree or above</fullName>
+                <default>false</default>
+                <label>Bachelor&apos;s Degree or above</label>
+            </value>
+            <value>
+                <fullName>Child under 18</fullName>
+                <default>false</default>
+                <label>Child under 18</label>
+            </value>
+            <value>
+                <fullName>Unknown</fullName>
+                <default>false</default>
+                <label>Unknown</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

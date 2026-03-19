@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_Military_Served_Active_Duty__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Has the individual served on active duty in the US military (including National Guard or Reserves)?</inlineHelpText>
+    <label>Survey Military Served Active Duty</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Survey_Response</valueSetName>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Survey_Military_Veteran_Discharge_Status__c</fullName>
+    <externalId>false</externalId>
+    <label>Survey Military Veteran Discharge Status</label>
+    <required>false</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Honorable</fullName>
+                <default>false</default>
+                <label>Honorable</label>
+            </value>
+            <value>
+                <fullName>General</fullName>
+                <default>false</default>
+                <label>General</label>
+            </value>
+            <value>
+                <fullName>Medical</fullName>
+                <default>false</default>
+                <label>Medical</label>
+            </value>
+            <value>
+                <fullName>Bad Conduct</fullName>
+                <default>false</default>
+                <label>Bad Conduct</label>
+            </value>
+            <value>
+                <fullName>Dishonorable</fullName>
+                <default>false</default>
+                <label>Dishonorable</label>
+            </value>
+            <value>
+                <fullName>Not Discharged - NO Active Duty or Still Active</fullName>
+                <default>false</default>
+                <label>Not Discharged - NO Active Duty or Still Active</label>
+            </value>
+            <value>
+                <fullName>No Selection</fullName>
+                <default>false</default>
+                <label>No Selection</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
