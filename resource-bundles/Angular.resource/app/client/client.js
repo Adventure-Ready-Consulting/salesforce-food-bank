@@ -273,9 +273,9 @@ angular.module('clientController')
     };
 
     $scope.scheduleAppointment = function () {
-      $window.open('/flow/C501_Appointment_Schedule?varInputContactId=' + $scope.contactid, '_blank');
+      $window.open('/apex/C501_Appointment_Schedule?id=' + $scope.contactid, '_blank');
     };
-
+    
     $scope.queryVisits = function() {
       if (!$scope.status.queriedVisits) {
         fbVisitHistory($scope.data.household.id).then(
