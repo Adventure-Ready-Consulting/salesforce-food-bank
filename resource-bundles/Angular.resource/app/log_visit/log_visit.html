@@ -118,13 +118,13 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="comm in commodities" 
-                                            ng-class="{danger: !comm.remaining, warning: (comm.remaining > 0 && comm.remaining < comm.monthlyLimit)}"
+                                            ng-class="{danger: comm.remaining <= 0, warning: (comm.remaining > 0 && comm.remaining < comm.monthlyLimit)}"
                                             ng-form="commForm">
                                             
                                             <td style="vertical-align: middle;">{{comm.name}}</td>
                                             <td class="text-center" style="vertical-align: middle;">{{comm.remaining}}</td>
                                             <td>
-                                                <div ng-class="{ 'input-group': true, 'input-group-sm': true, 'has-error': commForm.ptsUsed.$invalid }">
+                                                <div ng-if="comm.remaining > 0" ng-class="{ 'input-group': true, 'input-group-sm': true, 'has-error': commForm.ptsUsed.$invalid }">
                                                     <input class="form-control input-sm" type="number" 
                                                         ng-model="comm.ptsUsed" min="0" max="{{comm.remaining}}" name="ptsUsed"
                                                         required="required" ></input>

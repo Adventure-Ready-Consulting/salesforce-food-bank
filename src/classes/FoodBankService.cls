@@ -16,6 +16,7 @@ public with sharing class FoodBankService {
         public String boxSize { get; private set; }
         public DateTime checkInTime { get; private set; }
         public Boolean checkinNotToday { get; private set; }
+        public String commodityUsageJson { get; private set; }
     }
 
     @RemoteAction
@@ -48,6 +49,7 @@ public with sharing class FoodBankService {
             cc.boxSize = fbc.Box_Size__c;
             cc.checkInTime = fbc.Check_In_Time__c;
             cc.checkinNotToday = (cc.checkInTime != null && cc.checkInTime.date() != Date.today());
+            cc.commodityUsageJson = fbc.Commodity_Usage_JSON__c;
             chkList.add( cc );
         }
 
@@ -430,6 +432,31 @@ public with sharing class FoodBankService {
             Visit_Date__c = (fbc != null && fbc.Check_In_Time__c != null) ? fbc.Check_In_Time__c : Datetime.now(),
             Visitor__c = (fbc != null && fbc.Visitor__c != null) ? fbc.Visitor__c : contactid
         );
+        // A normal single checkout sends the commodity map from Angular. Check Out All
+        // intentionally sends an empty map, so read the selections from this household's
+        // current check-in record. The JSON keys are commodity names and are not hardcoded;
+        // every selected commodity with a positive quantity is copied to the visit.
+        if ((commodityUsage == null || commodityUsage.isEmpty()) &&
+            fbc != null && String.isNotBlank(fbc.Commodity_Usage_JSON__c)) {
+            try {
+                Map<String, Object> pendingUsage =
+                    (Map<String, Object>)JSON.deserializeUntyped(fbc.Commodity_Usage_JSON__c);
+                commodityUsage = new Map<String, Integer>();
+
+                for (String commodityName : pendingUsage.keySet()) {
+                    Object rawQuantity = pendingUsage.get(commodityName);
+                    if (rawQuantity == null) continue;
+
+                    Integer quantity = Decimal.valueOf(String.valueOf(rawQuantity)).intValue();
+                    if (quantity > 0) commodityUsage.put(commodityName, quantity);
+                }
+            } catch (Exception commodityParseException) {
+                System.debug(LoggingLevel.WARN,
+                    'Unable to parse pending commodity usage for household ' + hhId +
+                    ': ' + commodityParseException.getMessage());
+            }
+        }
+
         if (commodityUsage != null && !commodityUsage.isEmpty())
             cv.Commodity_Usage_JSON__c = JSON.serializePretty(commodityUsage);
 

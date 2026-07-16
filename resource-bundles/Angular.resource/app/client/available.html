@@ -28,14 +28,14 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="comm in data.commodities" 
-                                            ng-class="{danger: !comm.remaining, warning: (comm.remaining > 0 && comm.remaining < comm.monthlyLimit)}"
+                                            ng-class="{danger: comm.remaining <= 0, warning: (comm.remaining > 0 && comm.remaining < comm.monthlyLimit)}"
                                             ng-form="commForm">
                                             
                                             <td>{{comm.name}}</td>
                                             <td class="text-center">{{comm.remaining}}</td>
                                             <td class="text-center">{{comm.monthlyLimit}}</td>
                                             <td>
-                                                <div ng-class="{ 'input-group': true, 'input-group-sm': true, 'has-error': commForm.ptsUsed.$invalid }">
+                                                <div ng-if="comm.remaining > 0" ng-class="{ 'input-group': true, 'input-group-sm': true, 'has-error': commForm.ptsUsed.$invalid }">
                                                     <input class="form-control input-sm" type="number" 
                                                         ng-model="comm.ptsUsed" min="0" max="{{comm.remaining}}" name="ptsUsed"
                                                         required="required" style="width:50px" ></input>

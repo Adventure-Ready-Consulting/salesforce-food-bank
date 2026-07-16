@@ -103,7 +103,8 @@ public with sharing class FoodBankServiceTest {
 			Visitor__c = contact.Id,
             Points_Remaining__c = 15,
             Box_Size__c = 'small',
-            Check_In_Time__c = Datetime.now()
+            Check_In_Time__c = Datetime.now(),
+            Commodity_Usage_JSON__c = '{"Baby Formula":1,"Emergency Bag (No Cook)":2}'
         );
 		insert checkin1;
 
@@ -127,12 +128,22 @@ public with sharing class FoodBankServiceTest {
 			Visitor__c = contact2.Id,
             Points_Remaining__c = 15,
             Box_Size__c = 'small',
-            Check_In_Time__c = Datetime.now()
+            Check_In_Time__c = Datetime.now(),
+            Commodity_Usage_JSON__c = '{"Diaper":1,"Holiday Bag":1}'
         );
 		insert checkin2;
 
 		List<FoodBankService.ClientCheckin> cc = FoodBankService.getCheckedInList();
 		System.assertEquals(2, cc.size(), 'Two households are currently checked in');
+        Boolean foundPendingCommodity = false;
+        for (FoodBankService.ClientCheckin item : cc) {
+            if (item.clientId == household1.Id) {
+                foundPendingCommodity = item.commodityUsageJson != null &&
+                    item.commodityUsageJson.contains('Baby Formula') &&
+                    item.commodityUsageJson.contains('Emergency Bag (No Cook)');
+            }
+        }
+        System.assert(foundPendingCommodity, 'Checked-in list should include pending commodity usage');
 
 		Map<String, Integer> commU = new Map<String, Integer>();
 		commU.put('Meat', 2);
@@ -141,7 +152,22 @@ public with sharing class FoodBankServiceTest {
 		System.assert(cVId != null);
 
 		List<Food_Bank_Visit__c> cV = FoodBankService.getVisitHistory(household1.Id);
-		System.assert(cV.size() == 1);	
+		System.assert(cV.size() == 1);
+
+        Id bulkVisitId = FoodBankService.logVisit(household2.Id, contact2.Id, 'small', 2.2, 0, new Map<String, Integer>(), '');
+        Food_Bank_Visit__c bulkVisit = [
+            SELECT Commodity_Usage_JSON__c
+            FROM Food_Bank_Visit__c
+            WHERE Id = :bulkVisitId
+        ];
+        System.assertNotEquals(null, bulkVisit.Commodity_Usage_JSON__c);
+        Map<String, Object> savedUsage = (Map<String, Object>)JSON.deserializeUntyped(
+            bulkVisit.Commodity_Usage_JSON__c
+        );
+        System.assertEquals(1, Decimal.valueOf(String.valueOf(savedUsage.get('Diaper'))).intValue());
+        System.assertEquals(1, Decimal.valueOf(String.valueOf(savedUsage.get('Holiday Bag'))).intValue());
+        System.assertEquals(2, savedUsage.size(),
+            'Bulk checkout should copy every selected commodity and no unselected commodities');
 	}	
     
 }
