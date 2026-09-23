@@ -519,6 +519,7 @@
     </relatedContent>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Canceled__c</fields>
         <fields>C501_Appointment__c</fields>
         <fields>Appointment_Info__c</fields>
         <relatedList>C501_Appointment_Scheduled__c.C501_Contact__c</relatedList>

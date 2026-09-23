@@ -23,6 +23,7 @@
             <a class="btn btn-success" ng-click="recordVisit()" ng-disabled="status.loading || (data.ptsRemaining == 0)">Record Visit</a>
             <a class="btn btn-info" ng-click="fullView()">Full View...</a>
             <a class="btn btn-info" ng-click="scheduleAppointment()">Schedule...</a>
+            <a class="btn btn-info" ng-click="modifyAppointments()">Modify...</a>
             <a class="btn btn-default" ng-click="cancelEdit()">Cancel</a>
         </div>
         <div class="panel-body" ng-show="data.household">
@@ -49,6 +50,7 @@
             <a class="btn btn-success" ng-href="#/log_visit/{{data.household.id}}/{{contactid}}" ng-disabled="status.loading || (data.ptsRemaining == 0)">Record Visit</a>
             <a class="btn btn-info" ng-click="fullView()">Full View...</a>
             <a class="btn btn-info" ng-click="scheduleAppointment()">Schedule...</a>
+            <a class="btn btn-info" ng-click="modifyAppointments()">Modify...</a>
             <a class="btn btn-default" ng-click="cancelEdit()">Cancel</a>
         </div>
     </div>

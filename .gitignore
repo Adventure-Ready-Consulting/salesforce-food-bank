@@ -19,3 +19,4 @@ test_results*
 /temp
 ~*
 *.zip
+src/staticresources/Angular.resource.zip

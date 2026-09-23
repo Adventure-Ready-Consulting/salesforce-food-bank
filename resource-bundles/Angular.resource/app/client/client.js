@@ -275,6 +275,10 @@ angular.module('clientController')
     $scope.scheduleAppointment = function () {
       $window.open('/apex/C501_Appointment_Schedule?id=' + $scope.contactid, '_blank');
     };
+
+    $scope.modifyAppointments = function () {
+      $window.open('/apex/C501_Appointment_Schedule?id=' + $scope.contactid + '&mode=modify', '_blank');
+    };
     
     $scope.queryVisits = function() {
       if (!$scope.status.queriedVisits) {
