@@ -1,0 +1,23 @@
+Steps in sfdx / cci for deploying
+
+1) cci org list
+
+2) sf project retrieve start -o prod.wcfb -x manifest/package.xml
+
+** Checks to make sure code and prod are in sync
+
+3) cci task run deploy --org prod.wcfb
+
+
+helper stuff
+
+sf project retrieve start -o prod.wcfb -x manifest/package.xml
+
+sf org login web -r https://login.salesforce.com -a prod.wcfb
+cci task run deploy --org backupprod.wcfb
+sf project retrieve start -o backupprod.wcfb -x manifest/package.xml
+cci org default backupprod.wcfb
+sf org login web -r https://test.salesforce.com -a backupprod.wcfb
+cci org connect prod --alias prod.wcfb
+cci version
+ cci org connect prod.wcfb
