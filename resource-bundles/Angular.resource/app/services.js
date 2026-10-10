@@ -414,6 +414,13 @@ angular.module('appServices')
   }]);
 
 angular.module('appServices')
+  .factory('fbUpcomingAppointments', ['jsRemoting', function(jsRemoting) {
+    return function(contactId) {
+      return jsRemoting.invoke('getUpcomingHouseholdAppointments', contactId);
+    };
+  }]);
+
+angular.module('appServices')
   .factory('fbVisitHistory', ['jsRemoting', function(jsRemoting) {
     return function( hhid ) {
       return jsRemoting.invoke('getVisitHistory', hhid, function(result){

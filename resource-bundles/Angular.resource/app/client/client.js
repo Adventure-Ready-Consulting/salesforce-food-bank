@@ -24,9 +24,9 @@ angular.module('clientController', [
 angular.module('clientController')
   .controller('clientController', ['$scope', '$location', '$timeout', '$window', '$routeParams', '$alert', '$q',
     'foundSettings', 'foundHousehold', 'fbHouseholdDetail', 'fbSaveHousehold', 'fbSaveHouseholdMembers',
-    'fbSaveHouseholdAndMembers', 'fbCheckIn', 'fbVisitHistory',
+    'fbSaveHouseholdAndMembers', 'fbCheckIn', 'fbVisitHistory', 'fbUpcomingAppointments',
   function($scope, $location, $timeout, $window, $routeParams, $alert, $q, foundSettings, foundHousehold,
-    fbHouseholdDetail, fbSaveHousehold, fbSaveHouseholdMembers, fbSaveHouseholdAndMembers, fbCheckIn, fbVisitHistory) {
+    fbHouseholdDetail, fbSaveHousehold, fbSaveHouseholdMembers, fbSaveHouseholdAndMembers, fbCheckIn, fbVisitHistory, fbUpcomingAppointments) {
 
     $scope.contactid = $routeParams.clientContactId;
 
@@ -34,6 +34,17 @@ angular.module('clientController')
 
     $scope.data = {};
     $scope.data.household = foundHousehold;
+
+    $scope.upcomingAppointments = [];
+    $scope.appointmentsLoading = true;
+    $scope.appointmentsError = false;
+    fbUpcomingAppointments($scope.contactid).then(function(appointments) {
+      $scope.upcomingAppointments = appointments || [];
+      $scope.appointmentsLoading = false;
+    }, function() {
+      $scope.appointmentsLoading = false;
+      $scope.appointmentsError = true;
+    });
 
     $scope.status = {};
     $scope.data.commodities = foundSettings.commodities;

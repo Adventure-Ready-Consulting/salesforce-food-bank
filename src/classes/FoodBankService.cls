@@ -69,6 +69,45 @@ public with sharing class FoodBankService {
         return chkList;
     }
 
+    // Upcoming household appointments displayed alongside the check-in form.
+    public class UpcomingAppointment {
+        public Id scheduledId { get; set; }
+        public String scheduledName { get; set; }
+        public Id appointmentId { get; set; }
+        public String appointmentName { get; set; }
+        public Date appointmentDate { get; set; }
+        public String appointmentTime { get; set; }
+    }
+
+    @RemoteAction
+    public static List<UpcomingAppointment> getUpcomingHouseholdAppointments(Id contactId) {
+        List<UpcomingAppointment> result = new List<UpcomingAppointment>();
+        if (contactId == null) return result;
+        List<Contact> contacts = [SELECT AccountId FROM Contact WHERE Id = :contactId LIMIT 1];
+        if (contacts.isEmpty() || contacts[0].AccountId == null) return result;
+        Id householdId = contacts[0].AccountId;
+        for (C501_Appointment_Scheduled__c scheduled : [
+            SELECT Id, Name, C501_Appointment__c, C501_Appointment__r.Name,
+                   Date__c, Time__c
+            FROM C501_Appointment_Scheduled__c
+            WHERE Account__c = :householdId
+              AND Canceled__c = false
+              AND Date__c >= :Date.today()
+            ORDER BY Date__c ASC, Time__c ASC
+            LIMIT 500
+        ]) {
+            UpcomingAppointment item = new UpcomingAppointment();
+            item.scheduledId = scheduled.Id;
+            item.scheduledName = scheduled.Name;
+            item.appointmentId = scheduled.C501_Appointment__c;
+            item.appointmentName = scheduled.C501_Appointment__r == null ? null : scheduled.C501_Appointment__r.Name;
+            item.appointmentDate = scheduled.Date__c;
+            item.appointmentTime = scheduled.Time__c;
+            result.add(item);
+        }
+        return result;
+    }
+
     @RemoteAction
     public static Account getHouseholdDetail( Id hhid ) {
         Account hh =

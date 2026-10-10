@@ -34,7 +34,7 @@
                   {{visitorWarningMsg()}}
                 </div>
             </div>
-            <div class="col-lg-8">
+            <div class="col-md-8">
                 <div ng-include="basePath + '/app/client/visit_reason.html'"></div>
                 <div ng-include="basePath + '/app/client/address.html'"></div>
                 <div ng-include="basePath + '/app/client/members.html'"></div>
@@ -43,6 +43,22 @@
                 <div ng-include="basePath + '/app/client/tags.html'" ng-if="settings.tags"></div>
                 <div ng-include="basePath + '/app/client/available.html'" ng-if="data.commodities || settings.general.trackPoints"></div>
                 <div ng-include="basePath + '/app/client/notes.html'" ng-if="!(data.commodities || settings.general.trackPoints)"></div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><strong>Appointments Scheduled ({{upcomingAppointments.length}})</strong></div>
+                    <div class="panel-body">
+                        <p ng-if="appointmentsLoading">Loading appointments...</p>
+                        <p ng-if="appointmentsError" class="text-danger">Unable to load appointments.</p>
+                        <p ng-if="!appointmentsLoading && !appointmentsError && !upcomingAppointments.length">No future scheduled appointments.</p>
+                        <div ng-repeat="appointment in upcomingAppointments track by appointment.scheduledId" style="margin-bottom:14px; overflow-wrap:anywhere;">
+                            <a ng-href="/lightning/r/C501_Appointment_Scheduled__c/{{appointment.scheduledId}}/view" target="_blank" rel="noopener">{{appointment.scheduledName}}</a>
+                            <div ng-if="appointment.appointmentId">
+                                Appointment: <a ng-href="/lightning/r/C501_Appointment__c/{{appointment.appointmentId}}/view" target="_blank" rel="noopener">{{appointment.appointmentName || 'View Appointment'}}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="panel-footer text-center" ng-show="data.household">

@@ -36,9 +36,10 @@ if (Test-Path $OutputPath) {
     Remove-Item $OutputPath -Force
 }
 
+Add-Type -AssemblyName System.IO.Compression
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $FileStream = [System.IO.File]::Open($OutputPath, [System.IO.FileMode]::CreateNew)
-$Zip = New-Object System.IO.Compression.ZipArchive(
+$Zip = [System.IO.Compression.ZipArchive]::new(
     $FileStream,
     [System.IO.Compression.ZipArchiveMode]::Create,
     $false
