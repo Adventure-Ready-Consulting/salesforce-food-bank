@@ -157,7 +157,9 @@ angular.module('appServices')
           settings.commodities.push({
             'name': c.Name,
             'allowOverage': c.Allow_Overage__c,
-            'monthlyLimit': c.Monthly_Limit__c
+            'monthlyLimit': c.Monthly_Limit__c,
+            'quarterlyReset': c.Quarterly_Reset_Cycle__c === true,
+            'monthlyReset': c.Monthly_Reset_Cycle__c === true
           });
         });
 
@@ -293,22 +295,36 @@ angular.module('appServices')
           });
         });
 
-        // add up points and commodities used in previous visits this month
+        // Visits are retrieved for the calendar quarter. Monthly totals and points
+        // must still be calculated only from the current calendar month.
         var pointsUsed = 0;
-        client.commodityUsage = {};
-        client.visitsThisMonth = (result.FoodBankVisits__r ? result.FoodBankVisits__r.length : 0);
-        _.forEach( result.FoodBankVisits__r, function(v) {
-          if (v.Points_Used__c) {
-            pointsUsed += v.Points_Used__c;
+        client.commodityUsageMonthly = {};
+        client.commodityUsageQuarterly = {};
+        client.commodityUsage = client.commodityUsageMonthly;
+        client.visitsThisMonth = 0;
+        var today = new Date();
+        var monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+        var quarterStart = new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3, 1);
+        var nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+        var nextQuarter = new Date(today.getFullYear(), Math.floor(today.getMonth() / 3) * 3 + 3, 1);
+        _.forEach(result.FoodBankVisits__r, function(visit) {
+          // Salesforce Date fields may be ISO date strings or epoch milliseconds.
+          var dateValue = visit.Visit_Date__c;
+          var visitDate = (typeof dateValue === 'number') ? new Date(dateValue) :
+            new Date(String(dateValue).substring(0, 10) + 'T12:00:00');
+          var isCurrentMonth = visitDate >= monthStart && visitDate < nextMonth;
+          var isCurrentQuarter = visitDate >= quarterStart && visitDate < nextQuarter;
+          if (isCurrentMonth) {
+            client.visitsThisMonth++;
+            pointsUsed += visit.Points_Used__c || 0;
           }
-
-          // TODO: try catch? json could be bogus
-          if (v.Commodity_Usage_JSON__c) {
-            _.forEach( angular.fromJson( v.Commodity_Usage_JSON__c ), function(v, k) {
-              if (k in client.commodityUsage) {
-                client.commodityUsage[k] += v;
-              } else {
-                client.commodityUsage[k] = v;
+          if (visit.Commodity_Usage_JSON__c) {
+            _.forEach(angular.fromJson(visit.Commodity_Usage_JSON__c), function(amount, name) {
+              if (isCurrentQuarter) {
+                client.commodityUsageQuarterly[name] = (client.commodityUsageQuarterly[name] || 0) + Number(amount || 0);
+              }
+              if (isCurrentMonth) {
+                client.commodityUsageMonthly[name] = (client.commodityUsageMonthly[name] || 0) + Number(amount || 0);
               }
             });
           }
@@ -333,8 +349,9 @@ angular.module('appServices')
                 comm.ptsUsed = client.commodityPending[v.name];
               }
               comm.remaining = comm.monthlyLimit;
-              if( client.commodityUsage && (v.name in client.commodityUsage) ) {
-                comm.remaining -= client.commodityUsage[v.name];
+              var usage = comm.quarterlyReset ? client.commodityUsageQuarterly : client.commodityUsageMonthly;
+              if (usage && (v.name in usage)) {
+                comm.remaining -= usage[v.name];
               }
               client.commodityAvailability.push(comm);
             });

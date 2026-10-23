@@ -118,7 +118,7 @@ public with sharing class FoodBankService {
                 Staff_Notes__c, Phone, Proof_of_Address__c, Proof_of_Address_Date__c,
                 (select Id, Name, FirstName, LastName, Age_Group__c, Age__c, Birthdate, Proof_of_Infant__c, Inactive__c, Gender__c, Id_Number__c
                     from Contacts order by Inactive__c ASC, Age__c DESC),
-                (select Points_Used__c, Commodity_Usage_JSON__c from FoodBankVisits__r where Visit_Date__c = THIS_MONTH)
+                (select Visit_Date__c, Points_Used__c, Commodity_Usage_JSON__c from FoodBankVisits__r where Visit_Date__c = THIS_QUARTER)
                 from Account where id = :hhid];
 
         if (FoodBankSettings.general.Track_Points__c)

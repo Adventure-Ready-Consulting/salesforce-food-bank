@@ -47,7 +47,7 @@ public with sharing class FoodBankSettings {
         get {
             if (commodities == null) {
                 commodities = (!Test.isRunningTest()) ?
-                    [select name, Monthly_Limit__c, Allow_Overage__c from Food_Bank_Commodity__c order by Sort_Order__c, name] :
+                    [select name, Monthly_Limit__c, Allow_Overage__c, Monthly_Reset_Cycle__c, Quarterly_Reset_Cycle__c from Food_Bank_Commodity__c order by Sort_Order__c, name] :
                     new List<Food_Bank_Commodity__c>{
                         new Food_Bank_Commodity__c(
                             Name = 'Meat',
