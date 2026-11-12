@@ -115,7 +115,7 @@
     </div>
     <div class="panel-body" ng-if="intakeExpanded[intake.id]">
      <table class="table table-condensed"><thead><tr><th>Member</th><th>Birthdate</th><th>Contact</th></tr></thead><tbody>
-      <tr ng-repeat="member in intake.members"><td>{{member.First_Name__c}} {{member.Last_Name__c}} <strong ng-if="$first">(Primary)</strong></td><td>{{member.Birthdate__c}}</td><td>{{member.Email__c}} {{member.Phone__c}}</td></tr>
+      <tr ng-repeat="member in intake.members"><td>{{member.First_Name__c}} {{member.Last_Name__c}} <strong ng-if="$first">(Primary)</strong></td><td>{{member.Birthdate__c | date:'M/d/yyyy':'UTC'}}</td><td>{{member.Email__c}} {{member.Phone__c}}</td></tr>
      </tbody></table>
      <p>{{intake.members[0].Address__c}}, {{intake.members[0].City__c}}, {{intake.members[0].State__c}} {{intake.members[0].Zip_Code__c}}</p>
      <button class="btn btn-success btn-sm" ng-disabled="intakeBusy" ng-click="decideIntakes([intake],'Approved')">Approve</button>
