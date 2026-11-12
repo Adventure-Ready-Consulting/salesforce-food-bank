@@ -24,6 +24,11 @@
             </div>
         </div>
     </div>
+    <div class="alert alert-warning" role="status" ng-if="!status.editingAddress && status.householdReviewDue()" style="margin:12px 15px 0; padding:10px 12px;">
+        <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Household Review Due</strong>
+        <div>Last address verified: {{(data.household.proofOfAddressDate | date:'MM/dd/yyyy':'UTC') || 'Not recorded'}}</div>
+        <div>Please verify the household information using the edit pencil above. Check-in is not blocked.</div>
+    </div>
     <div class="panel-body">
         <div ng-if="!status.editingAddress" style="font-size:15px;">
             <p>{{data.household.householdComposition}}</p>

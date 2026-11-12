@@ -80,7 +80,7 @@ angular.module('clientController')
 
     $scope.data = {};
     $scope.data.household = foundHousehold;
-    if (isReviewDue(foundHousehold.lastReviewedDate)) $scope.openReview();
+    // Annual review is a non-blocking inline reminder; do not open the review modal.
 
     $scope.upcomingAppointments = [];
     $scope.appointmentsLoading = true;
@@ -370,6 +370,20 @@ angular.module('clientController')
       return ($scope.settings.general.proofOfAddressRequired &&
                 ((!$scope.data.addressData && !$scope.data.household.proofOfAddress) ||
                  ($scope.data.addressData && !$scope.data.addressData.proofOfAddress)));
+    };
+
+    // Use the existing org setting for the household review interval (months).
+    // A missing review date is overdue. Dates may arrive as ISO strings or epoch milliseconds.
+    $scope.status.householdReviewDue = function() {
+      var interval = Number($scope.settings.general.proofOfAddressUpdateInterval);
+      if (!isFinite(interval) || interval <= 0) interval = 12;
+      var value = $scope.data.household.lastReviewedDate;
+      if (!value) return true;
+      var reviewed = new Date(value);
+      if (isNaN(reviewed.getTime())) return true;
+      var due = new Date(reviewed.getTime());
+      due.setMonth(due.getMonth() + interval);
+      return due <= new Date();
     };
 
     $scope.editAddress = function() {

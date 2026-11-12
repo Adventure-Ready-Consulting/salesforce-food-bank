@@ -71,34 +71,3 @@
         </div>
     </div>
 </div>
-<!-- Annual household review: contained in the check-in page; dismissing preserves selections. -->
-<div class="modal-backdrop fade in" ng-if="review.visible" style="z-index:1040;"></div>
-<div class="modal fade in" ng-if="review.visible" style="display:block; z-index:1050; overflow-y:auto;" role="dialog" aria-label="Annual Household Review">
-  <div class="modal-dialog modal-lg"><div class="modal-content">
-    <div class="modal-header"><h4 class="modal-title">Annual Household Review — {{data.household.name}}</h4></div>
-    <div class="modal-body" ng-if="!review.editing">
-      <p><strong>Last reviewed:</strong> {{(data.household.lastReviewedDate | date:'MMM d, yyyy') || 'Not recorded'}}</p>
-      <p>Please verify address, phone, proof of address, and household members. This review does not prevent check-in.</p>
-    </div>
-    <div class="modal-body" ng-if="review.editing">
-      <div class="row"><div class="col-sm-8"><label>Street address</label><input class="form-control" ng-model="review.details.address"></div><div class="col-sm-4"><label>Phone</label><input class="form-control" ng-model="review.details.phone"></div></div>
-      <div class="row" style="margin-top:8px;"><div class="col-sm-5"><label>City</label><input class="form-control" ng-model="review.details.city"></div><div class="col-sm-3"><label>State</label><input class="form-control" ng-model="review.details.state"></div><div class="col-sm-4"><label>ZIP</label><input class="form-control" ng-model="review.details.postalCode"></div></div>
-      <div class="form-group" style="margin-top:12px;"><label>Proof of address</label><input class="form-control" maxlength="50" ng-model="review.details.proofOfAddress" placeholder="Type of proof / verifier initials"></div>
-      <h5>Household members</h5><p class="help-block">Mark a member inactive if they no longer live in the household. Existing members are not deleted.</p>
-      <div class="row" ng-repeat="m in review.details.members track by $index" style="margin-bottom:7px;"><div class="col-sm-4"><input class="form-control" placeholder="First name" ng-model="m.firstName"></div><div class="col-sm-4"><input class="form-control" placeholder="Last name" ng-model="m.lastName"></div><div class="col-sm-4"><label class="checkbox-inline"><input type="checkbox" ng-model="m.inactive"> Inactive</label></div></div>
-      <button type="button" class="btn btn-default btn-sm" ng-click="addReviewMember()">Add household member</button>
-      <div class="form-group" style="margin-top:12px;"><label>Review notes</label><textarea class="form-control" rows="3" ng-model="review.details.reviewNotes"></textarea></div>
-      <div class="form-group"><label>Reviewed by (name or initials)</label><input class="form-control" maxlength="80" ng-model="review.reviewer" placeholder="Required"></div>
-      <h5>Verification checklist</h5>
-      <div class="checkbox"><label><input type="checkbox" ng-model="review.verified[0]"> Address and phone verified</label></div>
-      <div class="checkbox"><label><input type="checkbox" ng-model="review.verified[1]"> Household members verified</label></div>
-      <div class="checkbox"><label><input type="checkbox" ng-model="review.verified[2]"> Proof of address reviewed</label></div>
-      <div class="checkbox"><label><input type="checkbox" ng-model="review.verified[3]"> Other household information current</label></div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default" ng-click="reviewContinue()" ng-disabled="review.saving">Continue Check-In</button>
-      <button type="button" class="btn btn-primary" ng-if="!review.editing" ng-click="review.editing=true">Review Household</button>
-      <button type="button" class="btn btn-success" ng-if="review.editing" ng-disabled="review.saving || !review.reviewer || !review.verified.every(Boolean)" ng-click="confirmReview()">{{review.saving ? 'Saving...' : 'Confirm Household Reviewed'}}</button>
-    </div>
-  </div></div>
-</div>
