@@ -37,7 +37,7 @@
                 <a ng-if="settings.general.checkInRequired" class="btn btn-primary" href="#/client/{{selected.id}}/{{selected.contactid}}" ng-disabled="!(selected.id)">Check In</a>
                 <a ng-if="!settings.general.checkInRequired" class="btn btn-primary" href="#/client/{{selected.id}}/{{selected.contactid}}" ng-disabled="!(selected.id)">Record Visit</a>
                 <a class="btn btn-success" href="#/new_client/">New Client</a>
-                <button type="button" class="btn btn-warning" ng-disabled="!intakes.length" ng-click="openIntakes()">Intake Approvals Pending<span ng-if="intakes.length"> ({{intakes.length}})</span></button>
+                <button ng-if="intakeApprovalsEnabled" type="button" class="btn btn-warning" ng-disabled="!intakes.length" ng-click="openIntakes()">Intake Approvals Pending<span ng-if="intakes.length"> ({{intakes.length}})</span></button>
               </div>
             </form>
         </div>

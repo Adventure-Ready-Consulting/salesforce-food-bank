@@ -53,7 +53,8 @@
             <script>
                 angular.module('appServerData', [])
                     .constant('basePath', '{!URLFOR($Resource.Angular, "")}'.split('?')[0])
-                    .constant('controllerName', 'FoodBankService');
+                    .constant('controllerName', 'FoodBankService')
+                    .constant('intakeApprovalsEnabled', /(?:^|[?&])testflight=true(?:&|$)/i.test(window.location.search));
             </script>
         </head>
         <div class="bootstrap">

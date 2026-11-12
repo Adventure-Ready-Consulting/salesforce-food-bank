@@ -9,21 +9,23 @@ angular.module('homeController', [
 ]);
 
 angular.module('homeController')
-  .controller('homeController', ['$scope', '$location', '$timeout', '$interval', 'fbCheckInList', 'fbHouseholdSearch', 'foundSettings', '$alert', 'jsRemoting', '$window',
-  function($scope, $location, $timeout, $interval, fbCheckInList, fbHouseholdSearch, foundSettings, $alert, jsRemoting, $window) {
+  .controller('homeController', ['$scope', '$location', '$timeout', '$interval', 'fbCheckInList', 'fbHouseholdSearch', 'foundSettings', '$alert', 'jsRemoting', '$window', 'intakeApprovalsEnabled',
+  function($scope, $location, $timeout, $interval, fbCheckInList, fbHouseholdSearch, foundSettings, $alert, jsRemoting, $window, intakeApprovalsEnabled) {
 
     $scope.settings = foundSettings;
+    $scope.intakeApprovalsEnabled = intakeApprovalsEnabled;
     $scope.intakes = [];
     $scope.intakeOpen = false;
     $scope.intakeBusy = false;
     $scope.intakeSelected = {};
     $scope.intakeExpanded = {};
     $scope.loadIntakes = function() {
+      if (!intakeApprovalsEnabled) return;
       return jsRemoting.invoke('getPendingIntakes', [], undefined, {timeout: 60000}).then(function(items) {
         $scope.intakes = items || [];
       }, function(reason) { $alert({title:'Unable to load intake approvals',content:reason.message,type:'danger'}); });
     };
-    $scope.openIntakes = function() { $scope.intakeOpen = true; $scope.loadIntakes(); };
+    $scope.openIntakes = function() { if (!intakeApprovalsEnabled) return; $scope.intakeOpen = true; $scope.loadIntakes(); };
     $scope.closeIntakes = function() { if (!$scope.intakeBusy) $scope.intakeOpen = false; };
     $scope.selectedIntakeCount = function() {
       return $scope.intakes.filter(function(item) { return !!$scope.intakeSelected[item.id]; }).length;
@@ -32,6 +34,7 @@ angular.module('homeController')
       $scope.intakes.forEach(function(item) { $scope.intakeSelected[item.id] = true; });
     };
     $scope.decideIntakes = function(items, decision) {
+      if (!intakeApprovalsEnabled) return;
       if ($scope.intakeBusy || !items.length) return;
       if (!$window.confirm((decision === 'Approved' ? 'Approve' : 'Reject') + ' ' + items.length + ' household(s)?')) return;
       $scope.intakeBusy = true;
@@ -54,7 +57,7 @@ angular.module('homeController')
       var items = $scope.intakes.filter(function(item) { return all || $scope.intakeSelected[item.id]; });
       $scope.decideIntakes(items, 'Approved');
     };
-    $scope.loadIntakes();
+    if (intakeApprovalsEnabled) $scope.loadIntakes();
 
 
     $scope.searchClients = function(query) {
