@@ -44,6 +44,23 @@ private class FoodBankIntakeApprovalsTest {
         System.assert(groups[0].name.contains('Sample'));
     }
 
+    @IsTest static void rejectSinglePersonHousehold() {
+        SObject parent = intake('Single', 'Person', true, null, 'Pending');
+        parent.put('Household_Size__c', 1);
+        insert parent;
+        Id parentId = (Id)parent.get('Id');
+        Test.startTest();
+        String outcome = FoodBankIntakeApprovals.decide(parentId, 'Rejected');
+        Test.stopTest();
+        System.assertEquals('Rejected', outcome);
+        List<SObject> rows = Database.query('SELECT Intake_Status__c, Approved_Date__c, Approved_By__c FROM WCFB_Intake_Contact_Object_Import__c WHERE Id = :parentId');
+        System.assertEquals(1, rows.size());
+        System.assertEquals('Rejected', rows[0].get('Intake_Status__c'));
+        System.assertEquals(Date.today(), rows[0].get('Approved_Date__c'));
+        System.assertEquals(UserInfo.getUserId(), rows[0].get('Approved_By__c'));
+        System.assertEquals(0, FoodBankIntakeApprovals.pending().size());
+    }
+
     @IsTest static void rejectUpdatesWholeHousehold() {
         Id parentId = makeHousehold();
         Test.startTest();

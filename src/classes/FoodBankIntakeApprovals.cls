@@ -57,7 +57,10 @@ public with sharing class FoodBankIntakeApprovals {
             SObject primary = parents[0];
             List<SObject> members = Database.query('SELECT ' + FIELDS + ' FROM ' + OBJECT_NAME +
                 ' WHERE Primary_Contact__c = :primaryId FOR UPDATE');
-            members.add(0, primary);
+            // Apex List.add(index, value) fails when inserting at index 0 of an empty list.
+            List<SObject> household = new List<SObject>{ primary };
+            household.addAll(members);
+            members = household;
             for (SObject r : members) if (r.get('Intake_Status__c') != 'Pending')
                 throw new ApprovalException('A household member is no longer pending.');
             if (decision == 'Rejected') {
