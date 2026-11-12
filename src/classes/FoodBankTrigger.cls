@@ -9,20 +9,32 @@ public with sharing class FoodBankTrigger {
 
 	private static Boolean nowUpdatingVisitCheckbox = false;
 
-	public void updateProofDates( list<Account> hhList, map<id, Account> oldMap ) {
+	public void updateProofDates(List<Account> hhList, Map<Id, Account> oldMap) {
+        // Both dates must agree whenever either date or proof-of-address text changes.
+        // When both dates are explicitly changed, Proof_of_Address_Date__c wins.
+        for (Account hh : hhList) {
+            Account previous = oldMap == null ? null : oldMap.get(hh.Id);
+            Boolean proofChanged = previous == null
+                ? !String.isBlank(hh.Proof_of_Address__c)
+                : hh.Proof_of_Address__c != previous.Proof_of_Address__c;
+            Boolean proofDateChanged = previous == null
+                ? hh.Proof_of_Address_Date__c != null
+                : hh.Proof_of_Address_Date__c != previous.Proof_of_Address_Date__c;
+            Boolean reviewedDateChanged = previous == null
+                ? hh.Last_Reviewed_Date__c != null
+                : hh.Last_Reviewed_Date__c != previous.Last_Reviewed_Date__c;
 
-		// set the proof of address date
-		for (Account hh : hhList) {
-			if (String.isBlank(hh.Proof_of_Address__c)) {
-				hh.Proof_of_Address_Date__c = null;
-			} else {
-				if (oldMap == null || hh.Proof_of_Address__c != oldMap.get(hh.id).Proof_of_Address__c ) {
-					hh.Proof_of_Address_Date__c = system.today();
-					hh.Last_Reviewed_Date__c = hh.Proof_of_Address_Date__c;
-				}
-			}
-		}
-	}
+            if (proofChanged) {
+                Date verifiedDate = String.isBlank(hh.Proof_of_Address__c) ? null : Date.today();
+                hh.Proof_of_Address_Date__c = verifiedDate;
+                hh.Last_Reviewed_Date__c = verifiedDate;
+            } else if (proofDateChanged) {
+                hh.Last_Reviewed_Date__c = hh.Proof_of_Address_Date__c;
+            } else if (reviewedDateChanged) {
+                hh.Proof_of_Address_Date__c = hh.Last_Reviewed_Date__c;
+            }
+        }
+    }
 
 	public void updateContactAge( list<Contact> clientList, map<id, Contact> oldMap ) {
 

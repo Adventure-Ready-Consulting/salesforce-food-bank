@@ -65,25 +65,64 @@ public with sharing class FoodBankTriggerTest {
 	}
 
 
-    @isTest static void testProofOfAddressReviewDateOnlyOnChange() {
+    @isTest static void testBidirectionalProofAndReviewDates() {
+        Date today = Date.today();
+        Date prior = today.addDays(-60);
+        Date earlier = today.addDays(-90);
         Account hh = new Account(Name = 'Proof Date Test', Proof_of_Address__c = 'Utility bill');
         insert hh;
         hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
-        System.assertEquals(Date.today(), hh.Proof_of_Address_Date__c);
-        System.assertEquals(Date.today(), hh.Last_Reviewed_Date__c);
+        System.assertEquals(today, hh.Proof_of_Address_Date__c);
+        System.assertEquals(today, hh.Last_Reviewed_Date__c);
 
-        Date priorReview = Date.today().addDays(-60);
-        hh.Last_Reviewed_Date__c = priorReview;
+        hh.Last_Reviewed_Date__c = prior;
+        update hh;
+        hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(prior, hh.Proof_of_Address_Date__c, 'Review date change copies to proof date');
+        System.assertEquals(prior, hh.Last_Reviewed_Date__c);
+
+        hh.Proof_of_Address_Date__c = earlier;
+        update hh;
+        hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(earlier, hh.Last_Reviewed_Date__c, 'Proof date change copies to review date');
+
         hh.Phone = '5551234567';
         update hh;
         hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
-        System.assertEquals(priorReview, hh.Last_Reviewed_Date__c, 'Unrelated changes must not refresh review date');
+        System.assertEquals(earlier, hh.Proof_of_Address_Date__c, 'Unrelated changes do not refresh dates');
+        System.assertEquals(earlier, hh.Last_Reviewed_Date__c);
+
+        hh.Proof_of_Address_Date__c = prior;
+        hh.Last_Reviewed_Date__c = today;
+        update hh;
+        hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(prior, hh.Last_Reviewed_Date__c, 'Proof date wins when both change');
+
+        hh.Last_Reviewed_Date__c = null;
+        update hh;
+        hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(null, hh.Proof_of_Address_Date__c, 'Clearing review date clears proof date');
+
+        hh.Proof_of_Address__c = 'Photo ID';
+        update hh;
+        hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(today, hh.Proof_of_Address_Date__c);
+        System.assertEquals(today, hh.Last_Reviewed_Date__c);
 
         hh.Proof_of_Address__c = null;
         update hh;
         hh = [SELECT Id, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
-        System.assertEquals(null, hh.Proof_of_Address_Date__c, 'Clearing proof clears its date');
-        System.assertEquals(priorReview, hh.Last_Reviewed_Date__c, 'Clearing proof should not erase the last completed review date');
+        System.assertEquals(null, hh.Proof_of_Address_Date__c);
+        System.assertEquals(null, hh.Last_Reviewed_Date__c);
+    }
+
+    @isTest static void testInsertWithExplicitReviewDate() {
+        Date historical = Date.today().addDays(-45);
+        Account hh = new Account(Name = 'Imported Household', Last_Reviewed_Date__c = historical);
+        insert hh;
+        hh = [SELECT Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(historical, hh.Proof_of_Address_Date__c);
+        System.assertEquals(historical, hh.Last_Reviewed_Date__c);
     }
 
 	@isTest static void testupdateContactAge() {

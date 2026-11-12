@@ -188,6 +188,9 @@ public with sharing class FoodBankService {
         hh.BillingPostalCode = (String) data.get('postalCode');
         hh.Phone = (String) data.get('phone');
         hh.Proof_of_Address__c = (String) data.get('proofOfAddress');
+        // Confirming the address re-verifies proof even when its value is unchanged.
+        // The Account before-trigger clears this date when proof is blank.
+        hh.Proof_of_Address_Date__c = String.isBlank(hh.Proof_of_Address__c) ? null : Date.today();
         hh.Review_Notes__c = (String) data.get('reviewNotes');
         hh.Last_Reviewed_By__c = reviewer.trim();
         hh.Last_Reviewed_Date__c = Date.today();
