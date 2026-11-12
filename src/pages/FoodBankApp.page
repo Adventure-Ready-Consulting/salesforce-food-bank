@@ -54,7 +54,7 @@
                 angular.module('appServerData', [])
                     .constant('basePath', '{!URLFOR($Resource.Angular, "")}'.split('?')[0])
                     .constant('controllerName', 'FoodBankService')
-                    .constant('intakeApprovalsEnabled', /(?:^|[?&])testflight=true(?:&|$)/i.test(window.location.search));
+                    .constant('intakeApprovalsEnabled', '{!JSENCODE($User.Username)}'.toLowerCase() === 'arc@wcfb.org');
             </script>
         </head>
         <div class="bootstrap">
