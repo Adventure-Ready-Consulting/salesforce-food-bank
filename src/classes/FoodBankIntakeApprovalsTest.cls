@@ -97,6 +97,9 @@ private class FoodBankIntakeApprovalsTest {
         System.assertEquals(2, contacts.size());
         System.assertNotEquals(null, contacts[0].AccountId);
         System.assertEquals(contacts[0].AccountId, contacts[1].AccountId);
+        Account household = [SELECT RecordType.DeveloperName, Source__c FROM Account WHERE Id = :contacts[0].AccountId];
+        System.assertEquals('HH_Account', household.RecordType.DeveloperName);
+        System.assertEquals('Intake Web App', household.Source__c);
         System.assertEquals(0, FoodBankIntakeApprovals.pending().size());
     }
 

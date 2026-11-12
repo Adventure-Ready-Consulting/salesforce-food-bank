@@ -54,7 +54,7 @@
                 angular.module('appServerData', [])
                     .constant('basePath', '{!URLFOR($Resource.Angular, "")}'.split('?')[0])
                     .constant('controllerName', 'FoodBankService')
-                    .constant('intakeApprovalsEnabled', '{!JSENCODE($User.Username)}'.toLowerCase() === 'arc@wcfb.org');
+                    .constant('intakeApprovalsEnabled', ['arc@wcfb.org', 'michael@whitecenterfoodbank.org'].indexOf('{!JSENCODE($User.Username)}'.toLowerCase()) !== -1);
             </script>
         </head>
         <div class="bootstrap">

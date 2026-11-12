@@ -78,7 +78,16 @@ public with sharing class FoodBankIntakeApprovals {
                 return 'Rejected';
             }
             if (decision == 'Approved') {
-                Account hh = new Account(Name = 'REPLACE', BillingStreet = (String)primary.get('Address__c'),
+                List<RecordType> householdRecordTypes = [
+                    SELECT Id FROM RecordType
+                    WHERE SobjectType = 'Account' AND DeveloperName = 'HH_Account'
+                    LIMIT 1
+                ];
+                if (householdRecordTypes.isEmpty()) {
+                    throw new ApprovalException('Household Account record type HH_Account was not found.');
+                }
+                Account hh = new Account(Name = 'REPLACE', RecordTypeId = householdRecordTypes[0].Id,
+                    Source__c = 'Intake Web App', BillingStreet = (String)primary.get('Address__c'),
                     BillingCity = (String)primary.get('City__c'), BillingState = (String)primary.get('State__c'),
                     BillingPostalCode = (String)primary.get('Zip_Code__c'));
                 insert hh;

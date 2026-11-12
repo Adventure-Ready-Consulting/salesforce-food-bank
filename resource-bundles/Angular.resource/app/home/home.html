@@ -118,6 +118,7 @@
       <tr ng-repeat="member in intake.members"><td>{{member.First_Name__c}} {{member.Last_Name__c}} <strong ng-if="$first">(Primary)</strong></td><td>{{member.Birthdate__c | date:'M/d/yyyy':'UTC'}}</td><td>{{member.Email__c}} {{member.Phone__c}}</td></tr>
      </tbody></table>
      <p>{{intake.members[0].Address__c}}, {{intake.members[0].City__c}}, {{intake.members[0].State__c}} {{intake.members[0].Zip_Code__c}}</p>
+     <a class="btn btn-info btn-sm" ng-href="/lightning/r/WCFB_Intake_Contact_Object_Import__c/{{intake.id}}/view" target="_blank" rel="noopener noreferrer" aria-label="Review primary intake record for {{intake.name}}">Review</a>
      <button class="btn btn-success btn-sm" ng-disabled="intakeBusy" ng-click="decideIntakes([intake],'Approved')">Approve</button>
      <button class="btn btn-danger btn-sm" ng-disabled="intakeBusy" ng-click="decideIntakes([intake],'Rejected')">Reject</button>
     </div>
