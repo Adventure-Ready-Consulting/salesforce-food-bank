@@ -18,6 +18,7 @@ public with sharing class FoodBankTrigger {
 			} else {
 				if (oldMap == null || hh.Proof_of_Address__c != oldMap.get(hh.id).Proof_of_Address__c ) {
 					hh.Proof_of_Address_Date__c = system.today();
+					hh.Last_Reviewed_Date__c = hh.Proof_of_Address_Date__c;
 				}
 			}
 		}

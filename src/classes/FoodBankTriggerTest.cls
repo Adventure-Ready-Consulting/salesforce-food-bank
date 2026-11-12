@@ -58,10 +58,33 @@ public with sharing class FoodBankTriggerTest {
         household.Proof_of_Address__c = 'Staff verified - JS';
         update household;
 
-        household = [ SELECT Proof_of_Address_Date__c FROM Account WHERE Id = :household.Id ];
+        household = [ SELECT Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :household.Id ];
 
         System.assertEquals(System.today(), household.Proof_of_Address_Date__c, 'Proof of Address date should update to current date');
+        System.assertEquals(System.today(), household.Last_Reviewed_Date__c, 'Last Reviewed Date should update with proof of address date');
 	}
+
+
+    @isTest static void testProofOfAddressReviewDateOnlyOnChange() {
+        Account hh = new Account(Name = 'Proof Date Test', Proof_of_Address__c = 'Utility bill');
+        insert hh;
+        hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(Date.today(), hh.Proof_of_Address_Date__c);
+        System.assertEquals(Date.today(), hh.Last_Reviewed_Date__c);
+
+        Date priorReview = Date.today().addDays(-60);
+        hh.Last_Reviewed_Date__c = priorReview;
+        hh.Phone = '5551234567';
+        update hh;
+        hh = [SELECT Id, Proof_of_Address__c, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(priorReview, hh.Last_Reviewed_Date__c, 'Unrelated changes must not refresh review date');
+
+        hh.Proof_of_Address__c = null;
+        update hh;
+        hh = [SELECT Id, Proof_of_Address_Date__c, Last_Reviewed_Date__c FROM Account WHERE Id = :hh.Id];
+        System.assertEquals(null, hh.Proof_of_Address_Date__c, 'Clearing proof clears its date');
+        System.assertEquals(priorReview, hh.Last_Reviewed_Date__c, 'Clearing proof should not erase the last completed review date');
+    }
 
 	@isTest static void testupdateContactAge() {
 		Account household = new Account(
