@@ -403,4 +403,7 @@ LEFT(BLANKVALUE(BillingPostalCode, ShippingPostalCode), 5),
         <trackHistory>false</trackHistory>
         <type>Summary</type>
     </fields>
+    <fields><fullName>Last_Reviewed_Date__c</fullName><label>Last Reviewed Date</label><type>Date</type><required>false</required></fields>
+    <fields><fullName>Last_Reviewed_By__c</fullName><label>Last Reviewed By</label><type>Text</type><length>80</length><required>false</required></fields>
+    <fields><fullName>Review_Notes__c</fullName><label>Review Notes</label><type>LongTextArea</type><length>32768</length><visibleLines>4</visibleLines><required>false</required></fields>
 </CustomObject>

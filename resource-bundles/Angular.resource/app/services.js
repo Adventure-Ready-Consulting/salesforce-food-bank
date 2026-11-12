@@ -264,6 +264,9 @@ angular.module('appServices')
           mostRecentVisitDate: result.Most_Recent_Visit__c,
           proofOfAddressDate: result.Proof_of_Address_Date__c,
           proofOfAddress: result.Proof_of_Address__c,
+          lastReviewedDate: result.Last_Reviewed_Date__c,
+          lastReviewedBy: result.Last_Reviewed_By__c,
+          reviewNotes: result.Review_Notes__c,
           inactive: result.Inactive__c,
           pendingcommodityusage: result.Pending_Commodity_Usage_JSON__c,
           pendingnotes: result.Pending_Notes__c
@@ -469,5 +472,12 @@ angular.module('appServices')
   .factory('fbLogVisit', ['jsRemoting', function(jsRemoting) {
     return function( hhid, contactid, boxType, checkoutWeight, pointsUsed, commodities, notes ) {
       return jsRemoting.invoke('logVisit', [hhid, contactid, boxType, checkoutWeight, pointsUsed, commodities, notes]);
+    };
+  }]);
+
+angular.module('appServices')
+  .factory('fbConfirmHouseholdReview', ['jsRemoting', 'fbHouseholdDetail', function(jsRemoting, fbHouseholdDetail) {
+    return function(hhid, reviewer, review) {
+      return jsRemoting.invoke('confirmHouseholdReview', [hhid, reviewer, JSON.stringify(review)], fbHouseholdDetail.translate);
     };
   }]);

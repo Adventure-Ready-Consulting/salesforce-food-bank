@@ -60,6 +60,20 @@ public with sharing class FoodBankIntakeApprovals {
             members.add(0, primary);
             for (SObject r : members) if (r.get('Intake_Status__c') != 'Pending')
                 throw new ApprovalException('A household member is no longer pending.');
+            if (decision == 'Rejected') {
+                // Rejection only closes the intake request. Do not create an Account or Contacts.
+                // Update minimal records to avoid writing unrelated imported fields.
+                List<SObject> rejected = new List<SObject>();
+                for (SObject r : members) {
+                    SObject change = Schema.getGlobalDescribe().get(OBJECT_NAME).newSObject((Id)r.get('Id'));
+                    change.put('Intake_Status__c', 'Rejected');
+                    change.put('Approved_Date__c', Date.today());
+                    change.put('Approved_By__c', UserInfo.getUserId());
+                    rejected.add(change);
+                }
+                update rejected;
+                return 'Rejected';
+            }
             if (decision == 'Approved') {
                 Account hh = new Account(Name = 'REPLACE', BillingStreet = (String)primary.get('Address__c'),
                     BillingCity = (String)primary.get('City__c'), BillingState = (String)primary.get('State__c'),

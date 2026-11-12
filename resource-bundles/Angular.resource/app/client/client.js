@@ -24,16 +24,63 @@ angular.module('clientController', [
 angular.module('clientController')
   .controller('clientController', ['$scope', '$location', '$timeout', '$window', '$routeParams', '$alert', '$q',
     'foundSettings', 'foundHousehold', 'fbHouseholdDetail', 'fbSaveHousehold', 'fbSaveHouseholdMembers',
-    'fbSaveHouseholdAndMembers', 'fbCheckIn', 'fbVisitHistory', 'fbUpcomingAppointments',
+    'fbSaveHouseholdAndMembers', 'fbCheckIn', 'fbVisitHistory', 'fbUpcomingAppointments', 'fbConfirmHouseholdReview',
   function($scope, $location, $timeout, $window, $routeParams, $alert, $q, foundSettings, foundHousehold,
-    fbHouseholdDetail, fbSaveHousehold, fbSaveHouseholdMembers, fbSaveHouseholdAndMembers, fbCheckIn, fbVisitHistory, fbUpcomingAppointments) {
+    fbHouseholdDetail, fbSaveHousehold, fbSaveHouseholdMembers, fbSaveHouseholdAndMembers, fbCheckIn, fbVisitHistory, fbUpcomingAppointments, fbConfirmHouseholdReview) {
 
     $scope.contactid = $routeParams.clientContactId;
+    // Show the annual-review reminder once when this household is opened for check-in.
+    $scope.review = { visible: false, editing: false, saving: false, verified: [false, false, false, false] };
+    function isReviewDue(dateValue) {
+      if (!dateValue) return true;
+      var d = new Date(String(dateValue).substring(0, 10) + 'T12:00:00');
+      if (isNaN(d.getTime())) return true;
+      d.setFullYear(d.getFullYear() + 1);
+      return d <= new Date();
+    }
+    $scope.openReview = function() {
+      var h = $scope.data.household;
+      $scope.review.details = {
+        address: h.address || '', city: h.city || '', state: h.state || '',
+        postalCode: h.postalCode || '', phone: h.phone || '',
+        proofOfAddress: h.proofOfAddress || '', reviewNotes: h.reviewNotes || '',
+        members: (h.members || []).map(function(m) { return {
+          id: m.id, firstName: m.firstName || '', lastName: m.lastName || '',
+          inactive: m.inactive === 'Inactive'
+        }; })
+      };
+      $scope.review.verified = [false, false, false, false];
+      $scope.review.reviewer = '';
+      $scope.review.editing = false;
+      $scope.review.visible = true;
+    };
+    $scope.reviewContinue = function() { $scope.review.visible = false; $scope.review.editing = false; };
+    $scope.addReviewMember = function() {
+      $scope.review.details.members.push({firstName: '', lastName: '', inactive: false});
+    };
+    $scope.confirmReview = function() {
+      if ($scope.review.saving || !$scope.review.reviewer || !$scope.review.verified.every(Boolean)) return;
+      $scope.review.saving = true;
+      var payload = angular.copy($scope.review.details);
+      payload.verified = $scope.review.verified;
+      fbConfirmHouseholdReview($scope.data.household.id, $scope.review.reviewer, payload).then(function(h) {
+        $scope.data.household = h;
+        $scope.review.saving = false;
+        $scope.review.visible = false;
+        $alert({title: 'Household review confirmed.', type: 'success', duration: 3});
+      }, function(error) {
+        $scope.review.saving = false;
+        $alert({title: 'Review not saved.', content: error.message, type: 'danger'});
+      });
+    };
+
+
 
     $scope.settings = foundSettings;
 
     $scope.data = {};
     $scope.data.household = foundHousehold;
+    if (isReviewDue(foundHousehold.lastReviewedDate)) $scope.openReview();
 
     $scope.upcomingAppointments = [];
     $scope.appointmentsLoading = true;

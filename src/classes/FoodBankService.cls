@@ -126,6 +126,7 @@ public with sharing class FoodBankService {
                 Inactive__c, Notes__c, Source__c, External_ID__c, Adults__c,
                 Children__c, Infants__c, Seniors__c, Tags__c,
                 Staff_Notes__c, Phone, Proof_of_Address__c, Proof_of_Address_Date__c,
+                Last_Reviewed_Date__c, Last_Reviewed_By__c, Review_Notes__c,
                 (select Id, Name, FirstName, LastName, Age_Group__c, Age__c, Birthdate, Proof_of_Infant__c, Inactive__c, Gender__c, Id_Number__c
                     from Contacts order by Inactive__c ASC, Age__c DESC),
                 (select Visit_Date__c, Points_Used__c, Commodity_Usage_JSON__c from FoodBankVisits__r where Visit_Date__c = THIS_QUARTER)
@@ -164,6 +165,53 @@ public with sharing class FoodBankService {
                 from Food_Bank_Visit__c
                 where Household__c = :hhid and Visitor_Related__c = false
                 order by Visit_Date__c DESC limit 20];
+    }
+
+    // Annual review: persist corrections and audit in one transaction. No household member is deleted.
+    @RemoteAction
+    public static Account confirmHouseholdReview(Id householdId, String reviewer, String payloadJson) {
+        if (householdId == null || String.isBlank(reviewer) || reviewer.trim().length() > 80)
+            throw new FoodBankException('Enter the staff name or initials (80 characters maximum).');
+        if (String.isBlank(payloadJson))
+            throw new FoodBankException('Review details are required.');
+        Map<String, Object> data = (Map<String, Object>) JSON.deserializeUntyped(payloadJson);
+        List<Object> checks = (List<Object>) data.get('verified');
+        if (checks == null || checks.size() != 4)
+            throw new FoodBankException('All four review sections must be verified.');
+        for (Object checked : checks) {
+            if ((Boolean) checked != true) throw new FoodBankException('All four review sections must be verified.');
+        }
+        Account hh = [SELECT Id FROM Account WHERE Id = :householdId LIMIT 1 FOR UPDATE];
+        hh.BillingStreet = (String) data.get('address');
+        hh.BillingCity = (String) data.get('city');
+        hh.BillingState = (String) data.get('state');
+        hh.BillingPostalCode = (String) data.get('postalCode');
+        hh.Phone = (String) data.get('phone');
+        hh.Proof_of_Address__c = (String) data.get('proofOfAddress');
+        hh.Review_Notes__c = (String) data.get('reviewNotes');
+        hh.Last_Reviewed_By__c = reviewer.trim();
+        hh.Last_Reviewed_Date__c = Date.today();
+        List<Object> members = (List<Object>) data.get('members');
+        if (members == null) throw new FoodBankException('Household members must be verified.');
+        Set<Id> existingIds = new Set<Id>();
+        for (Contact c : [SELECT Id FROM Contact WHERE AccountId = :householdId]) existingIds.add(c.Id);
+        List<Contact> changes = new List<Contact>();
+        for (Object entry : members) {
+            Map<String, Object> m = (Map<String, Object>) entry;
+            String lastName = (String) m.get('lastName');
+            if (String.isBlank(lastName)) throw new FoodBankException('Each member needs a last name.');
+            Contact c = new Contact(AccountId = householdId, FirstName = (String) m.get('firstName'), LastName = lastName);
+            if (m.get('id') != null && String.valueOf(m.get('id')) != '') {
+                Id memberId = (Id) String.valueOf(m.get('id'));
+                if (!existingIds.contains(memberId)) throw new FoodBankException('Household member does not belong to this household.');
+                c.Id = memberId;
+            }
+            c.Inactive__c = m.get('inactive') == true;
+            changes.add(c);
+        }
+        update hh;
+        if (!changes.isEmpty()) upsert changes;
+        return getHouseholdDetail(householdId);
     }
 
     @RemoteAction
