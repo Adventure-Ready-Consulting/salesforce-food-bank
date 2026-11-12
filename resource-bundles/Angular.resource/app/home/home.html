@@ -37,6 +37,7 @@
                 <a ng-if="settings.general.checkInRequired" class="btn btn-primary" href="#/client/{{selected.id}}/{{selected.contactid}}" ng-disabled="!(selected.id)">Check In</a>
                 <a ng-if="!settings.general.checkInRequired" class="btn btn-primary" href="#/client/{{selected.id}}/{{selected.contactid}}" ng-disabled="!(selected.id)">Record Visit</a>
                 <a class="btn btn-success" href="#/new_client/">New Client</a>
+                <button type="button" class="btn btn-warning" ng-disabled="!intakes.length" ng-click="openIntakes()">Intake Approvals Pending<span ng-if="intakes.length"> ({{intakes.length}})</span></button>
               </div>
             </form>
         </div>
@@ -98,4 +99,35 @@
 </div>
 <div ng-show="settings.general.showStatistics" class="col-md-5">
     <div ng-include="basePath + '/app/home/stats.html'"></div>
+</div>
+
+<!-- Modal is rendered on the same route to preserve search and check-in state. -->
+<div ng-if="intakeOpen" class="modal-backdrop fade in" style="z-index:1040"></div>
+<div ng-if="intakeOpen" class="modal fade in" style="display:block;z-index:1050" role="dialog" aria-modal="true">
+ <div class="modal-dialog modal-lg"><div class="modal-content">
+  <div class="modal-header"><button type="button" class="close" ng-disabled="intakeBusy" ng-click="closeIntakes()">&times;</button><h4 class="modal-title">Intake Approvals ({{intakes.length}} households)</h4></div>
+  <div class="modal-body" style="max-height:65vh;overflow:auto">
+   <p>Select households to approve, or expand one to review its members.</p>
+   <div class="panel panel-default" ng-repeat="intake in intakes track by intake.id">
+    <div class="panel-heading" style="display:flex;align-items:center;gap:12px">
+     <input type="checkbox" ng-model="intakeSelected[intake.id]" ng-disabled="intakeBusy" aria-label="Select household" />
+     <a href="" ng-click="intakeExpanded[intake.id]=!intakeExpanded[intake.id]" style="flex:1"><strong>{{intake.name}}</strong> &mdash; {{intake.members.length}} people / {{intake.householdSize}} reported &mdash; {{intake.submitted | date:'shortDate'}} <span class="pull-right glyphicon" ng-class="intakeExpanded[intake.id]?'glyphicon-chevron-up':'glyphicon-chevron-down'"></span></a>
+    </div>
+    <div class="panel-body" ng-if="intakeExpanded[intake.id]">
+     <table class="table table-condensed"><thead><tr><th>Member</th><th>Birthdate</th><th>Contact</th></tr></thead><tbody>
+      <tr ng-repeat="member in intake.members"><td>{{member.First_Name__c}} {{member.Last_Name__c}} <strong ng-if="$first">(Primary)</strong></td><td>{{member.Birthdate__c}}</td><td>{{member.Email__c}} {{member.Phone__c}}</td></tr>
+     </tbody></table>
+     <p>{{intake.members[0].Address__c}}, {{intake.members[0].City__c}}, {{intake.members[0].State__c}} {{intake.members[0].Zip_Code__c}}</p>
+     <button class="btn btn-success btn-sm" ng-disabled="intakeBusy" ng-click="decideIntakes([intake],'Approved')">Approve</button>
+     <button class="btn btn-danger btn-sm" ng-disabled="intakeBusy" ng-click="decideIntakes([intake],'Rejected')">Reject</button>
+    </div>
+   </div>
+   <p ng-if="!intakes.length">No pending intake approvals.</p>
+  </div>
+  <div class="modal-footer"><button class="btn btn-default pull-left" ng-disabled="intakeBusy" ng-click="selectAllIntakes()">Select All</button>
+   <button class="btn btn-default" ng-disabled="intakeBusy" ng-click="closeIntakes()">Close</button>
+   <button class="btn btn-primary" ng-disabled="intakeBusy || !selectedIntakeCount()" ng-click="decideSelectedIntakes(false)">Approve ({{selectedIntakeCount()}})</button>
+   <button class="btn btn-success" ng-disabled="intakeBusy || !intakes.length" ng-click="decideSelectedIntakes(true)">Approve All ({{intakes.length}})</button>
+  </div>
+ </div></div>
 </div>

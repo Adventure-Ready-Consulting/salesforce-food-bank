@@ -9,10 +9,53 @@ angular.module('homeController', [
 ]);
 
 angular.module('homeController')
-  .controller('homeController', ['$scope', '$location', '$timeout', '$interval', 'fbCheckInList', 'fbHouseholdSearch', 'foundSettings', '$alert',
-  function($scope, $location, $timeout, $interval, fbCheckInList, fbHouseholdSearch, foundSettings, $alert) {
+  .controller('homeController', ['$scope', '$location', '$timeout', '$interval', 'fbCheckInList', 'fbHouseholdSearch', 'foundSettings', '$alert', 'jsRemoting', '$window',
+  function($scope, $location, $timeout, $interval, fbCheckInList, fbHouseholdSearch, foundSettings, $alert, jsRemoting, $window) {
 
     $scope.settings = foundSettings;
+    $scope.intakes = [];
+    $scope.intakeOpen = false;
+    $scope.intakeBusy = false;
+    $scope.intakeSelected = {};
+    $scope.intakeExpanded = {};
+    $scope.loadIntakes = function() {
+      return jsRemoting.invoke('getPendingIntakes', [], undefined, {timeout: 60000}).then(function(items) {
+        $scope.intakes = items || [];
+      }, function(reason) { $alert({title:'Unable to load intake approvals',content:reason.message,type:'danger'}); });
+    };
+    $scope.openIntakes = function() { $scope.intakeOpen = true; $scope.loadIntakes(); };
+    $scope.closeIntakes = function() { if (!$scope.intakeBusy) $scope.intakeOpen = false; };
+    $scope.selectedIntakeCount = function() {
+      return $scope.intakes.filter(function(item) { return !!$scope.intakeSelected[item.id]; }).length;
+    };
+    $scope.selectAllIntakes = function() {
+      $scope.intakes.forEach(function(item) { $scope.intakeSelected[item.id] = true; });
+    };
+    $scope.decideIntakes = function(items, decision) {
+      if ($scope.intakeBusy || !items.length) return;
+      if (!$window.confirm((decision === 'Approved' ? 'Approve' : 'Reject') + ' ' + items.length + ' household(s)?')) return;
+      $scope.intakeBusy = true;
+      var failures = [], completed = 0;
+      function next(index) {
+        if (index >= items.length) {
+          $scope.intakeBusy = false;
+          $scope.intakeSelected = {};
+          $scope.loadIntakes();
+          if (failures.length) $alert({title: completed + ' completed; ' + failures.length + ' failed', content:failures.join('; '), type:'danger'});
+          return;
+        }
+        jsRemoting.invoke('decideIntake', [items[index].id, decision], undefined, {timeout:60000}).then(function() {
+          completed++; next(index + 1);
+        }, function(err) { failures.push(items[index].name + ': ' + err.message); next(index + 1); });
+      }
+      next(0);
+    };
+    $scope.decideSelectedIntakes = function(all) {
+      var items = $scope.intakes.filter(function(item) { return all || $scope.intakeSelected[item.id]; });
+      $scope.decideIntakes(items, 'Approved');
+    };
+    $scope.loadIntakes();
+
 
     $scope.searchClients = function(query) {
       //var soslRegex = /['!\(\)~\*-]/g;
@@ -33,6 +76,7 @@ angular.module('homeController')
 
     $scope.refresh = function() {
       $scope.callingOut = true;
+      $scope.loadIntakes();
 
       fbCheckInList.get().then(
         function(result){

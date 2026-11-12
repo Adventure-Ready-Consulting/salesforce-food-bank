@@ -32,6 +32,16 @@ if ([string]::IsNullOrWhiteSpace($OutputPath)) {
 
 $OutputPath = [System.IO.Path]::GetFullPath($OutputPath)
 
+# Remove older generated upload archives from the repository root only.
+# Do this after a successful static build and before creating the new archive.
+# Avoid deleting the requested output when a caller supplies an existing path.
+Get-ChildItem -LiteralPath $RepoRoot -File -Filter 'food-bank-src*.zip' | ForEach-Object {
+    if ($_.FullName -ne $OutputPath) {
+        Write-Host "Removing previous upload ZIP: $($_.Name)"
+        Remove-Item -LiteralPath $_.FullName -Force
+    }
+}
+
 if (Test-Path $OutputPath) {
     Remove-Item $OutputPath -Force
 }

@@ -2,7 +2,11 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>intakefields</fullName>
     <types>
+        <members>FoodBankHomeDeliveryCleanupBatch</members>
+        <members>FoodBankHomeDeliveryCleanupBatchTest</members>
         <members>FoodBankHouseholdsTest</members>
+        <members>FoodBankMonthlyVisitors</members>
+        <members>FoodBankMonthlyVisitorsTest</members>
         <members>FoodBankService</members>
         <members>FoodBankServiceTest</members>
         <members>FoodBankSettings</members>

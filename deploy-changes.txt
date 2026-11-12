@@ -6,7 +6,9 @@ Steps in sfdx / cci for deploying
 
 ** Checks to make sure code and prod are in sync
 
-3) cci task run deploy --org prod.wcfb
+3) python .\resource-bundles\Angular.resource\buildstatic.py
+
+4) cci task run deploy --org prod.wcfb
 
 
 helper stuff

@@ -20,6 +20,16 @@ public with sharing class FoodBankService {
     }
 
     @RemoteAction
+    public static List<FoodBankIntakeApprovals.IntakeGroup> getPendingIntakes() {
+        return FoodBankIntakeApprovals.pending();
+    }
+
+    @RemoteAction
+    public static String decideIntake(Id primaryId, String decision) {
+        return FoodBankIntakeApprovals.decide(primaryId, decision);
+    }
+
+    @RemoteAction
     public static list<ClientCheckin> getCheckedInList() {
         list<ClientCheckin> chkList = new list<ClientCheckin>();
 
