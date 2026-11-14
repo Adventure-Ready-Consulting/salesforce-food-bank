@@ -14,18 +14,22 @@
         <members>FoodBankStatsTest</members>
         <members>FoodBankTrigger</members>
         <members>FoodBankTriggerTest</members>
+        <members>FoodBankOnlineReservationBatch</members>
+        <members>FoodBankOnlineReservationService</members>
         <name>ApexClass</name>
     </types>
     <types>
         <members>FoodBankApp</members>
         <members>FoodBankStats</members>
         <members>JasmineTestRunner</members>
+        <members>FoodBankOnlineReservations</members>
         <name>ApexPage</name>
     </types>
     <types>
         <members>FoodBankAccountTrigger</members>
         <members>FoodBankContactTrigger</members>
         <members>FoodBankVisitTrigger</members>
+        <members>FoodBankOnlineReservationAppointmentTrigger</members>
         <name>ApexTrigger</name>
     </types>
     <types>
@@ -151,6 +155,10 @@
         <members>Food_Bank_Visit__c.Visit_Date__c</members>
         <members>Food_Bank_Visit__c.Visit_Type__c</members>
         <members>Food_Bank_Visit__c.Visitor__c</members>
+        <members>FoodBank_Online_Reservation_Rule__c.Reserved__c</members>
+        <members>FoodBank_Online_Reservation_Rule__c.Rule_Key__c</members>
+        <members>FoodBank_Online_Reservation_Rule__c.Slot_Time__c</members>
+        <members>FoodBank_Online_Reservation_Rule__c.Weekday__c</members>
         <name>CustomField</name>
     </types>
     <types>
@@ -167,6 +175,7 @@
         <members>Food_Bank_Commodity__c</members>
         <members>Food_Bank_Settings__c</members>
         <members>Food_Bank_Visit__c</members>
+        <members>FoodBank_Online_Reservation_Rule__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -200,5 +209,5 @@
         <members>Angular</members>
         <name>StaticResource</name>
     </types>
-    <version>42.0</version>
+    <version>65.0</version>
 </Package>
